@@ -1,0 +1,42 @@
+<md-content layout="row" layout-align="space-around">
+    <md-card flex="flex" flex-gt-sm="50" flex-gt-md="50">
+        <md-content>
+            <form name="vm.form">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Course Name</label>
+                    <input type="text" name="searchName" ng-model="vm.searchName">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Course ID</label>
+                    <input type="number" name="searchID" ng-model="vm.searchID" ng-maxlength="3" ng-minlength="3">
+                    <div ng-messages="vm.form.searchID.$error" class="help-block" role="alert" multiple="">
+                        <div ng-message="maxlength">The field is too long: must be three numeric characters</div>
+                        <div ng-message="minlength">The field is too short: must be three numeric characters</div>
+                    </div>
+                </md-input-container>
+            </form>
+            <md-button type="submit" ng-disabled="vm.form.$invalid" class="md-raised md-primary" ng-click="vm.search(vm.searchName,vm.searchID)">Search</md-button>
+        </md-content>
+        <md-content ng-if="vm.course.length != 0">
+            <md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch ng-repeat="course in vm.course">
+                <md-card-title>
+                    {{course.name}}
+                </md-card-title>
+                <md-card-content>
+                    <p>Course ID: {{course.course_dept}} {{course.course_id}}</p>
+                </md-card-content>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button class="md-raised md-primary" ng-click="vm.view(course)">View</md-button>
+                </md-card-actions>
+            </md-card>
+        </md-content>
+        <md-content ng-if="vm.error">
+            <md-card>
+                <md-card-title>
+                    Course not found.
+                </md-card-title>
+            </md-card>
+        </md-content>
+    </md-card>
+</md-content>

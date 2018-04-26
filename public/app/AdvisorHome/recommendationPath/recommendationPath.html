@@ -1,0 +1,45 @@
+<md-card>
+    Based on
+    <li>preferences (from the questionnaire).</li>
+    <li>your degree option: {{vm.userDetails.preferences.other.degree_preference}}</li>
+    <li>prerequisites (from the Graduate Decision Form): <b ng-repeat="prerequisite in vm.userDetails.prerequisites">{{prerequisite}},&nbsp;</b></li>
+    <li>CSE course offering schedule.</li>
+    <li ng-if="vm.userDetails.coursesTaken.length!=0">courses taken: <b ng-repeat="course in vm.userDetails.coursesTaken">{{course}},&nbsp;</b></li>
+
+    <p><b>NOTE: </b>To view the recommended courses schedule to take for the upcoming  quarter, please click the detail view button.</p>
+</md-card>
+<div ng-cloak>
+    <md-content>
+        <md-tabs md-dynamic-height md-border-bottom>
+            <div ng-repeat="year in vm.recommendationPath">
+                <md-tab ng-repeat="quarter in year.quarters" label= '{{quarter.quarter}} {{year.year}}' >
+                    <md-card>
+                        <md-content>
+                            <md-table-container>
+                                <table md-table>
+                                    <thead md-head>
+                                    <tr md-row>
+                                        <th md-column><span>Course ID</span></th>
+                                        <th md-column><span>Course Name</span></th>
+                                        <th md-column><span>Total Units</span></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody md-body>
+                                    <tr md-row ng-repeat="course in quarter.schedule" ng-class="{'core-class': course.type === 'core', 'default-color': course.type !== 'core'}">
+                                        <td md-cell><span>{{course.course_id}}</span></td>
+                                        <td md-cell><span>{{course.name}}</span></td>
+                                        <td md-cell><span>{{course.units}}</span></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </md-table-container>
+                            <p ng-if="vm.recommendationPath.length==0">No Courses Enrolled</p>
+                        </md-content>
+                        <md-button class="md-raised md-primary" aria-label="Detail View" ng-click="vm.view(quarter,year.year)" ng-if="vm.recommendationPath.length!=0">Detail View</md-button>
+                    </md-card>
+                </md-tab>
+            </div>
+        </md-tabs>
+        <md-button class="md-raised md-primary" aria-label="Detail View" ng-click="vm.edit()"ng-if="vm.recommendationPath.length!=0">Edit Path</md-button>
+    </md-content>
+</div>
